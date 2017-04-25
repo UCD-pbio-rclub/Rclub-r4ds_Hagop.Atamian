@@ -3,26 +3,138 @@ title: "Week3_Assignment"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+```{r}
+mpg.data <- ggplot2::mpg
+head(mpg.data)
+colnames(mpg.data)
 ```
 
-## R Markdown
+#PLot the displ on the x-axis and hwy on the y-axis
+```{r}
+#install.packages("ggplot")
+library(ggplot2)
+ggplot(data = mpg.data) +
+  geom_point(mapping = aes(x = displ, y = hwy))
+```
+#3.2.4 Exercises
+```{r}
+#Excercise 1
+ggplot(data = mpg)
+#you see nothing. Just empty graph
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
+#Excercise 2
+#How many rows are in mtcars? How many columns?
+dim(mtcars)
+#[1] 32 rows and 11 columns
 ```
 
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
+```{r}
+#Excercise 3
+#What does the drv variable describe? Read the help for ?mpg to find out
+?mpg
+#It shows the wheel drive
+#f = front-wheel drive, r = rear wheel drive, 4 = 4wd
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+```{r}
+#Excercise 4
+#Make a scatterplot of hwy vs cyl
+ggplot(data = mpg) +
+  geom_point(mapping = aes(x = cyl, y =hwy))
+```
+
+```{r}
+#Excercise 5:
+#What happens if you make a scatterplot of class vs drv. Why is the plot not useful?
+ggplot(date = mpg) +
+  geom_point(mapping = aes(x = class, y = drv))
+```
+
+```{r}
+ggplot(data = mpg) +
+  geom_point(mapping = aes(x = displ, y = hwy, color = class))
+```
+
+#3.3.1 Exercises
+```{r}
+# 1) What’s gone wrong with this code? Why are the points not blue?
+ggplot(data = mpg) +
+  geom_point(mapping = aes(x = displ, y = hwy, color = "blue"))
+#because it is in the aes() function. For manual assignment of colors the assignment should be its own function
+ggplot(data =mpg) +
+  geom_point(aes(x = displ, y = hwy), color = "blue")
+```
+
+```{r}
+# 2) Which variables in mpg are categorical? Which variables are continuous? (Hint: type ?mpg to read the documentation for the dataset). How can you see this information when you run mpg?
+#colnames(mpg)
+summary(mpg)
+```
+
+```{r}
+# 3) Map a continuous variable to color, size, and shape. How do these aesthetics behave differently for categorical vs. continuous variables?
+ggplot(data = mpg) +
+  geom_point(mapping = aes(x = displ, y = year, color = hwy))
+#how do they behave differently??Ask in the class
+```
+
+```{r}
+# 4) What happens if you map the same variable to multiple aesthetics?
+ggplot(data = mpg) +
+  geom_point(mapping = aes(x = displ, y = hwy, color = hwy))
+# I think it shows the values. Nothing wrong with it. 
+```
+
+```{r}
+# 5) What does the stroke aesthetic do? What shapes does it work with? (Hint: use ?geom_point)
+?geom_point
+ggplot(data = mpg) +
+  geom_point(mapping = aes(x = displ, y = hwy, color = cyl, stroke = 2))
+#stroke assigns the width of the border of the shape
+```
+
+```{r}
+# 4)What happens if you map an aesthetic to something other than a variable name, like aes(colour = displ < 5)?
+ggplot(data = mpg) +
+  geom_point(mapping = aes(x = cyl, y = hwy, color = displ < 5))
+#returns a TRUE or FALSE value
+```
+
+# 3.5 Facets
+
+```{r}
+ggplot(data = mpg) +
+  geom_point(mapping = aes(x = displ, y = hwy)) +
+  facet_wrap(~ class, nrow = 1)
+```
+
+```{r}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy)) + 
+  facet_grid(drv ~ cyl)
+```
+
+#3.5.1 Exercises
+
+```{r}
+# 1)What happens if you facet on a continuous variable?
+ggplot(data = mpg) +
+  geom_point(mapping = aes(x = displ, y = cyl)) +
+  facet_wrap(~ hwy)
+#Becomes too complicated since it makes a figure for each data
+```
+
+```{r}
+# 2) What do the empty cells in plot with facet_grid(drv ~ cyl) mean? How do they relate to this plot?
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = drv, y = cyl))
+#Don't know the answer
+```
+
+```{r}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy)) +
+  facet_grid(. ~ cyl)
+```
+
+
