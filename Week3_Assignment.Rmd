@@ -1,6 +1,8 @@
 ---
 title: "Week3_Assignment"
-output: html_document
+output: 
+  html_document: 
+    keep_md: yes
 ---
 
 ```{r}
@@ -46,7 +48,7 @@ ggplot(data = mpg) +
 ```{r}
 #Excercise 5:
 #What happens if you make a scatterplot of class vs drv. Why is the plot not useful?
-ggplot(date = mpg) +
+ggplot(data = mpg) +
   geom_point(mapping = aes(x = class, y = drv))
 ```
 
